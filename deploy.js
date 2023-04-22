@@ -6,7 +6,7 @@ async function main() {
   console.log("Deploying contracts with the account:", deployer.address);
 
   const SoulboundCarbonOffsetToken = await hre.ethers.getContractFactory("SoulboundCarbonOffsetToken");
-  const tokenURI = "https://your-base-uri.com/metadata/";
+  const tokenURI = "https://raw.githubusercontent.com/lacebx/nfteez/main/data.json";
   const soulboundCarbonOffsetToken = await SoulboundCarbonOffsetToken.deploy(tokenURI);
 
   await soulboundCarbonOffsetToken.deployed();
