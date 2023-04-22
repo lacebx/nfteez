@@ -1,7 +1,7 @@
 {
   "name": "tonne Token",
   "description": "A token representing a carbon offset contribution",
-  "image": "https://raw.githubusercontent.com/lacebx/nfteez/main/data.json",
+  "image": "https://raw.githubusercontent.com/lacebx/nfteez/main/tonne.jpg",
   "attributes": [
     {
       "trait_type": "Location",
