@@ -1,0 +1,15 @@
+{
+  "name": "tonne Token",
+  "description": "A token representing a carbon offset contribution",
+  "image": "https://github.com/lacebx/nfteez/blob/main/tonne.jpg",
+  "attributes": [
+    {
+      "trait_type": "Location",
+      "value": "New York"
+    },
+    {
+      "trait_type": "Timestamp",
+      "value": 1645657662
+    }
+  ]
+}
