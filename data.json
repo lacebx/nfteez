@@ -10,6 +10,18 @@
     {
       "trait_type": "KG of CO2 removed from atmosphere",
       "value": "1KG"
+    },
+    {
+      "trait_type": "Coordinates",
+      "value": "40.6643° N, 73.9651° W"
+    },
+    {
+      "trait_type": "Date",
+      "value": "May 1, 2023"
+    },
+    {
+      "trait_type": "Steward",
+      "value": "TMK"
     }
   ]
 }
