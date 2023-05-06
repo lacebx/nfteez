@@ -10,11 +10,15 @@ contract SoulboundCarbonOffsetToken is ERC1155 {
     mapping(uint256 => CarbonOffsetProperties) private _carbonOffsetProperties;
     mapping(uint256 => bool) private _soulboundTokens;
 
-    struct CarbonOffsetProperties {
-        string name;
-        uint256 timestamp;
-        string location;
-    }
+   struct CarbonOffsetProperties {
+    string name;
+    uint256 timestamp;
+    string location;
+    string coordinates;
+    string tmk;
+}
+mapping(uint256 => CarbonOffsetProperties) private _carbonOffsetProperties;
+
 
     constructor(string memory uri) ERC1155(uri) {}
 
@@ -55,39 +59,48 @@ contract SoulboundCarbonOffsetToken is ERC1155 {
     }
 
     function searchTokensByName(string memory name) external view returns (uint256[] memory) {
-        return _searchTokensByProperty("name", name, 0, "");
-    }
+    return _searchTokensByProperty("name", name, 0, "", "");
+}
 
-    function searchTokensByTimestamp(uint256 timestamp) external view returns (uint256[] memory) {
-        return _searchTokensByProperty("timestamp", "", timestamp, "");
-    }
+function searchTokensByTimestamp(uint256 timestamp) external view returns (uint256[] memory) {
+    return _searchTokensByProperty("timestamp", "", timestamp, "", "");
+}
 
-    function searchTokensByLocation(string memory location) external view returns (uint256[] memory) {
-        return _searchTokensByProperty("location", "", 0, location);
-    }
+function searchTokensByLocation(string memory location) external view returns (uint256[] memory) {
+    return _searchTokensByProperty("location", "", 0, location, "");
+}
 
-    function _searchTokensByProperty(string memory property, string memory name, uint256 timestamp, string memory location) private view returns (uint256[] memory) {
-        uint256 count = 0;
-        for (uint256 i = 0; i < _currentTokenId; i++) {
-            if (_propertyMatches(property, i, name, timestamp, location)) {
-                count++;
-            }
+function searchTokensByCoordinates(string memory coordinates) external view returns (uint256[] memory) {
+    return _searchTokensByProperty("coordinates", "", 0, "", coordinates);
+}
+
+function searchTokensByTmk(string memory tmk) external view returns (uint256[] memory) {
+    return _searchTokensByProperty("tmk", "", 0, "", tmk);
+}
+
+function _searchTokensByProperty(string memory property, string memory name, uint256 timestamp, string memory location, string memory coordinates, string memory tmk) private view returns (uint256[] memory) {
+    uint256 count = 0;
+    for (uint256 i = 0; i < _currentTokenId; i++) {
+        if (_propertyMatches(property, i, name, timestamp, location, coordinates, tmk)) {
+            count++;
         }
+    }
 
-        uint256[] memory tokenIds = new uint256[](count);
-        uint256 index = 0;
-        for (uint256 i = 0; i < _currentTokenId; i++) {
-            if (_propertyMatches(property, i, name, timestamp, location)) {
-                tokenIds[index] = i;
-                index++;
-            }
+    uint256[] memory tokenIds = new uint256[](count);
+    uint256 index = 0;
+    for (uint256 i = 0; i < _currentTokenId; i++) {
+        if (_propertyMatches(property, i, name, timestamp, location, coordinates, tmk)) {
+            tokenIds[index] = i;
+            index++;
+        }
     }
 
     return tokenIds;
 }
+
 }
 
-function _propertyMatches(string memory property, uint256 tokenId, string memory name, uint256 timestamp, string memory location) private view returns (bool) {
+function _propertyMatches(string memory property, uint256 tokenId, string memory name, uint256 timestamp, string memory location, string memory coordinates, string memory tmk) private view returns (bool) {
     CarbonOffsetProperties memory properties = _carbonOffsetProperties[tokenId];
 
     if (keccak256(abi.encodePacked(property)) == keccak256(abi.encodePacked("name"))) {
@@ -96,7 +109,12 @@ function _propertyMatches(string memory property, uint256 tokenId, string memory
         return properties.timestamp == timestamp;
     } else if (keccak256(abi.encodePacked(property)) == keccak256(abi.encodePacked("location"))) {
         return keccak256(abi.encodePacked(properties.location)) == keccak256(abi.encodePacked(location));
+    } else if (keccak256(abi.encodePacked(property)) == keccak256(abi.encodePacked("coordinates"))) {
+        return keccak256(abi.encodePacked(properties.coordinates)) == keccak256(abi.encodePacked(coordinates));
+    } else if (keccak256(abi.encodePacked(property)) == keccak256(abi.encodePacked("tmk"))) {
+        return keccak256(abi.encodePacked(properties.tmk)) == keccak256(abi.encodePacked(tmk));
     } else {
         return false;
     }
 }
+
